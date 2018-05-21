@@ -24,10 +24,10 @@ client.on('message', async (message) => {
     if (check !== true) { 
         return;
     }
-    if(message.mentions.users.first() === undefined) { //no mentions so dont do anything
+    if (message.mentions.users.first() === undefined) { //no mentions so dont do anything
 
     } else { //some mentions so do something
-        if (message.mentions.users.size > 1 && (message.cleanContent.endsWith('++') || message.cleanContent.endsWith('--'))) {
+        if (message.mentions.users.size > 1) {
             message.channel.send("Cannot change multiple scores at once. Pick one.");
         } else if (message.mentions.users.first().id === message.author.id) { //dont let them change score of self
             message.channel.send("Cannot change your own score! Have a :cookie: instead.");
@@ -84,9 +84,7 @@ client.on('message', async (message) => {
         } else {
             message.channel.send("You are currently at " + current +" points.");
         }
-
     }
-
 })
 function choosePositive() { 
     var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "+1 GOE", "Splendid!", "Wow!"];
@@ -98,6 +96,7 @@ function chooseNegative() {
     var chooser = Math.floor(Math.random() * 8);
     return neg[chooser];
 }
+
 client.on('ready', () => {
     console.log("bot is ready");
 })
