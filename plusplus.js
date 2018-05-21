@@ -27,12 +27,12 @@ client.on('message', async (message) => {
     if (message.mentions.users.first() === undefined) { //no mentions so dont do anything
 
     } else { //some mentions so do something
-        if (message.mentions.users.size > 1) {
+        if (message.mentions.users.size > 1 && (message.cleanContent.endsWith('++') || message.cleanContent.endsWith('--') || message.cleanContent.endsWith('/score'))) {
             message.channel.send("Cannot change multiple scores at once. Pick one.");
         } else if (message.mentions.users.first().id === message.author.id) { //dont let them change score of self
             message.channel.send("Cannot change your own score! Have a :cookie: instead.");
             return;
-        } else if (message.mentions.users.first().id === "443870600327331842") {
+        } else if (message.mentions.users.first().id === "443870600327331842" && (message.cleanContent.endsWith('++') || message.cleanContent.endsWith('--') || message.cleanContent.endsWith('/score'))) {
             message.channel.send("Sorry, I don't have a score. Try someone else.");
         } else { //someone else was mentioned, so now find out if its ++ or --
             let type
