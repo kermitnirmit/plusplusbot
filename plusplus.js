@@ -44,6 +44,8 @@ client.on('message', async (message) => {
               type = 'plus'
             } else if (message.cleanContent.endsWith('/score')) {
               type = 'scoreCheck';
+            } else if (message.cleanContent.endsWith('/rank')) {
+                type = 'rankCheck';
             } else {
                 return;
             }
@@ -63,6 +65,9 @@ client.on('message', async (message) => {
                 addon = choosePositive();
             } else if (type === 'scoreCheck') {
                 message.channel.send(message.mentions.users.first() + " has " + current +" points.");
+                return;
+            } else if (type === 'rankCheck') {
+                getTargetRank(message, message.mentions.users.first().id);
                 return;
             }
             
@@ -88,12 +93,10 @@ client.on('message', async (message) => {
         }
     }
     if(message.content === "/leaderboard") { 
-        console.log("before method call")
         getLeaderboard(message);
-        let ID = '<@435229925503533057>'
-        // message.channel.send(ID);
-        // console.log(leader[0].value.score);
-        // console.log(leader.value.score);
+    }
+    if(message.content === "/rank") {
+        getRank(message);
     }
 })
 function choosePositive() { 
@@ -124,15 +127,56 @@ function getLeaderboard(message) {
               finalMessage += '<@' + element._id + '>' + "\n";
           });
           message.channel.send(finalMessage);
-        //   var userID = result[0]._id
-        //   console.log(userID);
-        //   return result;
           db.close();
         });
     }); 
-    // console.log("Da result:" + toReturn)
 }
-
+function getRank(message) { 
+    let target = message.author.id.toString();
+    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("plusplusdb");
+        var mysort = { "value.score": -1 };
+        dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
+          if (err) throw err;
+          var finalMessage = "";
+          var count = 1;
+          result.forEach(element => {
+              if(element._id === target) {
+                  finalMessage += "Your rank is " + count + ". You have " + element.value.score + " points.";
+                  message.channel.send(finalMessage);
+                  return;
+              } else {
+                  count++;
+              }
+          });
+          db.close();
+        });
+    }); 
+}
+function getTargetRank(message, target) { 
+    console.log("reached");
+    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("plusplusdb");
+        var mysort = { "value.score": -1 };
+        dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
+          if (err) throw err;
+          var finalMessage = "";
+          var count = 1;
+          result.forEach(element => {
+              if(element._id === target) {
+                  finalMessage += '<@' + target + ">" + " is ranked " + count + " with " + element.value.score + " points.";
+                  message.channel.send(finalMessage);
+                  return;
+              } else {
+                  count++;
+              }
+          });
+          db.close();
+        });
+    }); 
+}
 client.on('ready', () => {
     console.log("bot is ready");
 })
