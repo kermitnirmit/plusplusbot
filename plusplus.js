@@ -87,6 +87,14 @@ client.on('message', async (message) => {
             message.channel.send("You are currently at " + current +" points.");
         }
     }
+    if(message.content === "/leaderboard") { 
+        console.log("before method call")
+        getLeaderboard(message);
+        let ID = '<@435229925503533057>'
+        // message.channel.send(ID);
+        // console.log(leader[0].value.score);
+        // console.log(leader.value.score);
+    }
 })
 function choosePositive() { 
     var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "+1 GOE", "Splendid!", "Wow!"];
@@ -97,6 +105,32 @@ function chooseNegative() {
     var neg = ["RIP.", "That's a m00d.", "aw.", "sad.", "not cool.", "-1 GOE.", "Unlucky.", "Unfortunate"];
     var chooser = Math.floor(Math.random() * 8);
     return neg[chooser];
+}
+
+function getLeaderboard(message) { 
+    var toReturn;
+    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+        if (err) throw err;
+        var dbo = db.db("plusplusdb");
+        var mysort = { "value.score": -1 };
+        dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
+          if (err) throw err;
+          var finalMessage = "Rank   Points \t   User \n\n";
+          var count = 1;
+          result.forEach(element => {
+              finalMessage += count + '\t\t\t';
+              count++;
+              finalMessage += element.value.score + '\t\t\t';
+              finalMessage += '<@' + element._id + '>' + "\n";
+          });
+          message.channel.send(finalMessage);
+        //   var userID = result[0]._id
+        //   console.log(userID);
+        //   return result;
+          db.close();
+        });
+    }); 
+    // console.log("Da result:" + toReturn)
 }
 
 client.on('ready', () => {
