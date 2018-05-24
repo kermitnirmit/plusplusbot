@@ -22,10 +22,10 @@ client.on('message', async (message) => {
     }
     
     // uncomment to add rate-limiting
-    // const check = await pau.check(message)
-    // if (check !== true) { 
-    //     return;
-    // }
+    const check = await pau.check(message)
+    if (check !== true) { 
+        return;
+    }
     if (message.mentions.users.first() === undefined) { //no mentions so dont do anything
 
     } else { //some mentions so do something
