@@ -37,7 +37,7 @@ client.on('message', async (message) => {
         } else if (message.mentions.users.first().id === "443870600327331842" && (message.cleanContent.endsWith('++') || message.cleanContent.endsWith('--') || message.cleanContent.endsWith('/score'))) {
             message.channel.send("Sorry, I don't have a score. Try someone else.");
         } else { //someone else was mentioned, so now find out if its ++ or --
-            // uncomment to add rate-limiting
+            // uncomment to add rate-limiting only on specific messages
             const check = await pau.check(message)
             if (check !== true) { 
                 return;
