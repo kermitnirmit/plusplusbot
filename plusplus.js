@@ -21,11 +21,11 @@ client.on('message', async (message) => {
         return;
     }
     
-    // uncomment to add rate-limiting
-    const check = await pau.check(message)
-    if (check !== true) { 
-        return;
-    }
+    // uncomment to add rate-limiting for all messages
+    // const check = await pau.check(message)
+    // if (check !== true) { 
+    //     return;
+    // }
     if (message.mentions.users.first() === undefined) { //no mentions so dont do anything
 
     } else { //some mentions so do something
@@ -69,7 +69,6 @@ client.on('message', async (message) => {
             let addon
             if (type === 'minus') {
                 let minuses = client.scores.getProp(message.author.id, "negScore");
-                console.log(minuses);
                 client.scores.setProp(target, "score", --current)
                 client.scores.setProp(message.author.id, "negScore", (minuses + 1))
                 addon = chooseNegative();
@@ -127,13 +126,9 @@ client.on('message', async (message) => {
               negScore: 0
             })
         }
-        console.log("reached");
         let current = client.scores.getProp(target, "score");
-        console.log(current);
         let posNum = client.scores.getProp(target, "posScore");
-        console.log(posNum);
         var negNum = client.scores.getProp(target, "negScore");
-        console.log(negNum);
         let net = posNum - negNum;
         message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s).");
     }
@@ -194,7 +189,6 @@ function getRank(message) {
     }); 
 }
 function getTargetRank(message, target) { 
-    console.log("reached");
     MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
         if (err) throw err;
         var dbo = db.db("plusplusdb");
