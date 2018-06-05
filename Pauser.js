@@ -6,7 +6,7 @@ class Pauser {
         for (const x in this.tracked) {
           if (this.tracked[x] > 0) this.tracked[x]--
         }
-      }, 25000)
+      }, 35000)
     }
   
     check (message) {

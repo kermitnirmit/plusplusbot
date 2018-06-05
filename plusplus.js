@@ -38,15 +38,23 @@ client.on('message', async (message) => {
             message.channel.send("Sorry, I don't have a score. Try someone else.");
         } else { //someone else was mentioned, so now find out if its ++ or --
             // uncomment to add rate-limiting only on specific messages
-            const check = await pau.check(message)
-            if (check !== true) { 
-                return;
-            }
+            // const check = await pau.check(message)
+            // if (check !== true) { 
+            //     return;
+            // }
             let type
             if (message.cleanContent.endsWith('--')) {
                 type = 'minus'
+                const check = await pau.check(message)
+                if (check !== true) { 
+                    return;
+                }
             } else if (message.cleanContent.endsWith('++')) {
                  type = 'plus'
+                 const check = await pau.check(message)
+                 if (check !== true) { 
+                     return;
+                 }
             } else if (message.cleanContent.endsWith('/score')) {
                 type = 'scoreCheck';
             } else if (message.cleanContent.endsWith('/rank')) {
@@ -130,7 +138,12 @@ client.on('message', async (message) => {
         let posNum = client.scores.getProp(target, "posScore");
         var negNum = client.scores.getProp(target, "negScore");
         let net = posNum - negNum;
-        message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s).");
+        let total = posNum + negNum;
+        let positivity = posNum / total * 100;
+        let num = positivity.toString(); //If it's not already a String
+        num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
+        let realPos = num;
+        message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive");
     }
 })
 function choosePositive() { 
