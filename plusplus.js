@@ -143,7 +143,7 @@ client.on('message', async (message) => {
         let num = positivity.toString(); //If it's not already a String
         num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
         let realPos = num;
-        message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive");
+        message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive.");
     }
 })
 function choosePositive() { 
@@ -173,7 +173,8 @@ function getLeaderboard(message) {
               finalMessage += element.value.score + '\t\t\t';
               finalMessage += '<@' + element._id + '>' + "\n";
           });
-          message.channel.send(finalMessage);
+          message.channel.send("Sent to you as a PM.");
+          message.author.send(finalMessage);
           db.close();
         });
     }); 
@@ -235,7 +236,12 @@ function getSugar(message, target) {
     let posNum = client.scores.getProp(target, "posScore");
     let negNum = client.scores.getProp(target, "negScore");
     let net = posNum - negNum;
-    message.channel.send("<@" + target + ">" + " has given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s).");
+    let total = posNum + negNum;
+    let positivity = posNum / total * 100;
+    let num = positivity.toString(); //If it's not already a String
+    num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
+    let realPos = num;
+    message.channel.send("<@" + target + ">" + " has given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive.");
 }
 client.on('ready', () => {
     console.log("bot is ready");
