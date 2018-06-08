@@ -244,7 +244,7 @@ function getSugar(message, target) {
     let current = client.scores.getProp(target, "score");
     let posNum = client.scores.getProp(target, "posScore");
     let negNum = client.scores.getProp(target, "negScore");
-    if (posNum === 0) {
+    if (posNum === 0 && negNum === 0) {
         let net = posNum - negNum;
         message.channel.send("<@" + target + ">" + " has not given nor taken any points.");
         return;
