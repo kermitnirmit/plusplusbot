@@ -183,7 +183,8 @@ function getLeaderboard(message) {
               finalMessage += element.value.score + '\t\t\t';
               finalMessage += '<@' + element._id + '>' + "\n";
           });
-          message.channel.send(finalMessage);
+          message.channel.send("Sent to you as a PM.");
+          message.author.send(finalMessage);
           db.close();
         });
     }); 
