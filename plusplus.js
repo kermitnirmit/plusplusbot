@@ -137,13 +137,23 @@ client.on('message', async (message) => {
         let current = client.scores.getProp(target, "score");
         let posNum = client.scores.getProp(target, "posScore");
         var negNum = client.scores.getProp(target, "negScore");
-        let net = posNum - negNum;
-        let total = posNum + negNum;
-        let positivity = posNum / total * 100;
-        let num = positivity.toString(); //If it's not already a String
-        num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
-        let realPos = num;
-        message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive");
+        if (posNum === 0 && negNum === 0) {
+            message.channel.send("You've never given nor taken any points");
+            return;
+        }
+        if (negNum === 0) {
+            let net = posNum - negNum;
+            message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are 100% positive");
+            return;
+        } else {
+            let net = posNum - negNum;
+            let total = posNum + negNum;
+            let positivity = posNum / total * 100;
+            let num = positivity.toString(); //If it's not already a String
+            num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
+            let realPos = num;
+            message.channel.send("You've given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive");
+        }
     }
 })
 function choosePositive() { 
@@ -234,8 +244,24 @@ function getSugar(message, target) {
     let current = client.scores.getProp(target, "score");
     let posNum = client.scores.getProp(target, "posScore");
     let negNum = client.scores.getProp(target, "negScore");
-    let net = posNum - negNum;
-    message.channel.send("<@" + target + ">" + " has given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s).");
+    if (posNum === 0) {
+        let net = posNum - negNum;
+        message.channel.send("<@" + target + ">" + " has not given nor taken any points.");
+        return;
+    }
+    if (negNum === 0) {
+        let net = posNum - negNum;
+        message.channel.send("<@" + target + ">" + " has given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are 100% positive");
+        return;
+    } else {
+        let net = posNum - negNum;
+        let total = posNum + negNum;
+        let positivity = posNum / total * 100;
+        let num = positivity.toString(); //If it's not already a String
+        num = num.slice(0, (num.indexOf("."))+3); //With 3 exposing the hundredths place
+        let realPos = num;
+        message.channel.send("<@" + target + ">" + " has given " + posNum + " point(s) and taken away " + negNum + " point(s) \nOverall, you've given " + net + " point(s). \nYou are " + realPos + "% positive");
+    }
 }
 client.on('ready', () => {
     console.log("bot is ready");
