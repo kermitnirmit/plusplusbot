@@ -174,17 +174,26 @@ function getLeaderboard(message) {
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
         dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
-          if (err) throw err;
-          var finalMessage = "Rank   Points \t   User \n\n";
-          var count = 1;
-          result.forEach(element => {
-              finalMessage += count + '\t\t\t';
-              count++;
-              finalMessage += element.value.score + '\t\t\t';
-              finalMessage += '<@' + element._id + '>' + "\n";
-          });
-        //   message.channel.send("Sent to you as a PM.");
-          message.channel.send(finalMessage);
+            if (err) throw err;
+            var finalMessage = "Rank   Points \t   User \n\n";
+            var finalMessage2 = "Rank   Points \t   User \n\n";
+            var count = 1;
+            result.forEach(element => {
+                if (count <= 60) {
+                    finalMessage += count + '\t\t\t';
+                    count++;
+                    finalMessage += element.value.score + '\t\t\t';
+                    finalMessage += '<@' + element._id + '>' + "\n";
+                } else {
+                    finalMessage2 += count + '\t\t\t';
+                    count++;
+                    finalMessage2 += element.value.score + '\t\t\t';
+                    finalMessage2 += '<@' + element._id + '>' + "\n";
+                }
+            });
+            message.channel.send("Sent to you as a PM.");
+            message.author.send(finalMessage);
+            message.author.send(finalMessage2);
           db.close();
         });
     }); 
