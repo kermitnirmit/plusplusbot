@@ -276,4 +276,5 @@ function getSugar(message, target) {
 client.on('ready', () => {
     console.log("bot is ready");
 })
-client.login(config.token)
+client.login(process.env.TOKEN)
+
