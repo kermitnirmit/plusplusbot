@@ -13,7 +13,7 @@ client.scores = new Enmap({ provider: new EnmapMongo({
     name: `user_scores`,
     dbName: `plusplusdb`,
     url: 'mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb'
-  })
+    })
 });
 
 client.on('message', async (message) => {
@@ -50,11 +50,11 @@ client.on('message', async (message) => {
                     return;
                 }
             } else if (message.cleanContent.endsWith('++')) {
-                 type = 'plus'
-                 const check = await pau.check(message)
-                 if (check !== true) { 
-                     return;
-                 }
+                type = 'plus'
+                const check = await pau.check(message)
+                if (check !== true) { 
+                    return;
+                }
             } else if (message.cleanContent.endsWith('/score')) {
                 type = 'scoreCheck';
             } else if (message.cleanContent.endsWith('/rank')) {
@@ -67,9 +67,9 @@ client.on('message', async (message) => {
             let target = message.mentions.users.first().id
             if (!client.scores.has(target)) { //if theyre not there, instantiate them with a score of 0
                 client.scores.set(target, {
-                  score: 0,
-                  posScore: 0,
-                  negScore: 0
+                    score: 0,
+                    posScore: 0,
+                    negScore: 0
                 })
             }
             let current = client.scores.getProp(target, "score");
@@ -107,9 +107,9 @@ client.on('message', async (message) => {
         let target = message.author.id.toString();
         if (!client.scores.has(target)) { //if theyre not there, instantiate them with a score of 0
             client.scores.set(target, {
-              score: 0,
-              posScore: 0,
-              negScore: 0
+                score: 0,
+                posScore: 0,
+                negScore: 0
             })
         }
         let current = client.scores.getProp(target, "score");
@@ -129,9 +129,9 @@ client.on('message', async (message) => {
         let target = message.author.id.toString();
         if (!client.scores.has(target)) { //if theyre not there, instantiate them with a score of 0
             client.scores.set(target, {
-              score: 0,
-              posScore: 0,
-              negScore: 0
+                score: 0,
+                posScore: 0,
+                negScore: 0
             })
         }
         let current = client.scores.getProp(target, "score");
@@ -157,13 +157,13 @@ client.on('message', async (message) => {
     }
 })
 function choosePositive() { 
-    var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "+1 GOE", "Splendid!", "Wow!"];
-    var chooser = Math.floor(Math.random() * 6);
+    var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "+1 GOE", "Splendid!", "Wow!", "Awesome!"];
+    var chooser = Math.floor(Math.random() * 7);
     return pos[chooser];
 }
 function chooseNegative() { 
-    var neg = ["RIP.", "That's a m00d.", "aw.", "sad.", "not cool.", "-1 GOE.", "Unlucky.", "Unfortunate"];
-    var chooser = Math.floor(Math.random() * 8);
+    var neg = ["RIP.", "That's a m00d.", "aw.", "sad.", "not cool.", "-1 GOE.", "Unlucky.", "Unfortunate", "F", "Sadreax"];
+    var chooser = Math.floor(Math.random() * 10);
     return neg[chooser];
 }
 
@@ -194,7 +194,7 @@ function getLeaderboard(message) {
             message.channel.send("Sent to you as a PM.");
             message.author.send(finalMessage);
             message.author.send(finalMessage2);
-          db.close();
+            db.close();
         });
     }); 
 }
@@ -205,19 +205,19 @@ function getRank(message) {
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
         dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
-          if (err) throw err;
-          var finalMessage = "";
-          var count = 1;
-          result.forEach(element => {
-              if(element._id === target) {
-                  finalMessage += "Your rank is " + count + ". You have " + element.value.score + " point(s).";
-                  message.channel.send(finalMessage);
-                  return;
-              } else {
-                  count++;
-              }
-          });
-          db.close();
+            if (err) throw err;
+            var finalMessage = "";
+            var count = 1;
+            result.forEach(element => {
+                if(element._id === target) {
+                    finalMessage += "Your rank is " + count + ". You have " + element.value.score + " point(s).";
+                    message.channel.send(finalMessage);
+                    return;
+                } else {
+                    count++;
+                }
+            });
+            db.close();
         });
     }); 
 }
@@ -227,19 +227,19 @@ function getTargetRank(message, target) {
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
         dbo.collection("user_scores").find().sort(mysort).toArray(function(err, result) {
-          if (err) throw err;
-          var finalMessage = "";
-          var count = 1;
-          result.forEach(element => {
-              if(element._id === target) {
-                  finalMessage += '<@' + target + ">" + " is ranked " + count + " with " + element.value.score + " point(s).";
-                  message.channel.send(finalMessage);
-                  return;
-              } else {
-                  count++;
-              }
-          });
-          db.close();
+            if (err) throw err;
+            var finalMessage = "";
+            var count = 1;
+            result.forEach(element => {
+                if(element._id === target) {
+                    finalMessage += '<@' + target + ">" + " is ranked " + count + " with " + element.value.score + " point(s).";
+                    message.channel.send(finalMessage);
+                    return;
+                } else {
+                    count++;
+                }
+            });
+            db.close();
         });
     }); 
 }
