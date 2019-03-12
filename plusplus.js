@@ -12,7 +12,7 @@ var MongoClient = mongodb.MongoClient;
 client.scores = new Enmap({ provider: new EnmapMongo({
     name: `user_scores`,
     dbName: `plusplusdb`,
-    url: 'mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb'
+    url: process.env.URI
     })
 });
 
@@ -169,7 +169,7 @@ function chooseNegative() {
 
 function getLeaderboard(message) { 
     var toReturn;
-    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+    MongoClient.connect(process.env.URI, function(err, db) {
         if (err) throw err;
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
@@ -200,7 +200,7 @@ function getLeaderboard(message) {
 }
 function getRank(message) { 
     let target = message.author.id.toString();
-    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+    MongoClient.connect(process.env.URI, function(err, db) {
         if (err) throw err;
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
@@ -222,7 +222,7 @@ function getRank(message) {
     }); 
 }
 function getTargetRank(message, target) { 
-    MongoClient.connect('mongodb://plusplus:adder@ds119820.mlab.com:19820/plusplusdb', function(err, db) {
+    MongoClient.connect(process.env.URI, function(err, db) {
         if (err) throw err;
         var dbo = db.db("plusplusdb");
         var mysort = { "value.score": -1 };
