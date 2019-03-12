@@ -157,12 +157,12 @@ client.on('message', async (message) => {
     }
 })
 function choosePositive() { 
-    var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "+1 GOE", "Splendid!", "Wow!", "Awesome!"];
+    var pos = ["Bravo!", "Niceeeee", "Well done!", "Impressive!", "Slick!", "wow dude", "Splendid!", "Wow!", "Awesome!"];
     var chooser = Math.floor(Math.random() * 7);
     return pos[chooser];
 }
 function chooseNegative() { 
-    var neg = ["RIP.", "That's a m00d.", "aw.", "sad.", "not cool.", "-1 GOE.", "Unlucky.", "Unfortunate", "F", "Sadreax"];
+    var neg = ["RIP.", "oof.", "aw.", "sad.", "not cool.", "bruh", "Unlucky.", "Unfortunate", "F", "Sadreax"];
     var chooser = Math.floor(Math.random() * 10);
     return neg[chooser];
 }
